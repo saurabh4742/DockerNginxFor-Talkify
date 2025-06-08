@@ -1,10 +1,10 @@
-# 🚀 Talkify Reverse Proxy & Load Balancer (NGINX - No Upstream)
+# Talkify Reverse Proxy & Load Balancer (NGINX - No Upstream)
 
 A production-ready NGINX-based reverse proxy and load balancing solution for [Talkify](https://talkify-io.vercel.app), a real-time chat/video app. This setup avoids the traditional `upstream` block and instead uses NGINX’s built-in `split_clients` directive to dynamically balance user traffic across multiple Vercel-hosted frontend-backend instances.
 
 ---
 
-## 📦 Tech Stack
+##  Tech Stack
 
 | Technology      | Purpose                                                   |
 |-----------------|-----------------------------------------------------------|
@@ -16,7 +16,7 @@ A production-ready NGINX-based reverse proxy and load balancing solution for [Ta
 
 ---
 
-## 🎯 Key Features
+##  Key Features
 
 - ✅ Load balances traffic across 4 Vercel Talkify deployments using hash-based distribution
 - ✅ Handles WebSocket upgrade for real-time Socket.IO events
@@ -27,7 +27,7 @@ A production-ready NGINX-based reverse proxy and load balancing solution for [Ta
 
 ---
 
-## 📜 NGINX Behavior Explained
+##  NGINX Behavior Explained
 
 ### 🔀 Split-based Load Balancing
 
