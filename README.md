@@ -1,51 +1,40 @@
-# DockerNginxFor-Talkify
+# 🚀 Talkify Reverse Proxy & Load Balancer (NGINX - No Upstream)
 
-This repository contains a Dockerized NGINX configuration to load balance and reverse proxy requests to multiple Talkify backend services deployed on Render.
-
----
-
-## Project Overview
-
-Talkify is deployed as three separate backend services:
-
-- https://talkify-app1.onrender.com
-- https://talkify-app2.onrender.com
-- https://talkify-app3.onrender.com
-
-This project provides an NGINX service that acts as a reverse proxy and load balancer to distribute incoming requests among these backend services. It ensures high availability and scalability by routing traffic efficiently.
+A production-ready NGINX-based reverse proxy and load balancing solution for [Talkify](https://talkify-io.vercel.app), a real-time chat/video app. This setup avoids the traditional `upstream` block and instead uses NGINX’s built-in `split_clients` directive to dynamically balance user traffic across multiple Vercel-hosted frontend-backend instances.
 
 ---
 
-## Features
+## 📦 Tech Stack
 
-- Load balancing between multiple backend instances
-- Reverse proxy with NGINX inside Docker
-- Easy configuration for backend services
-- Handles HTTP traffic on port 80
-- Can be extended to support SSL termination if needed
-
----
-
-## Repository Contents
-
-- `nginx.conf` - NGINX configuration file with upstream backend servers
-- `Dockerfile` - Dockerfile to build NGINX image with the custom config
-- `render.yaml` - (optional) Render deployment manifest for multi-service deployment
-- Additional scripts/configs as needed
+| Technology      | Purpose                                                   |
+|-----------------|-----------------------------------------------------------|
+| **NGINX**       | Reverse proxy, load balancer, WebSocket handler           |
+| **Vercel**      | Hosts multiple deployed instances of the Talkify app      |
+| **Docker (Optional)** | Used to containerize the NGINX setup if preferred   |
+| **Socket.IO**   | Enables real-time communication via `/socket.io` route    |
+| **Next.js**     | Framework used in Talkify for frontend + backend logic    |
 
 ---
 
-## Prerequisites
+## 🎯 Key Features
 
-- Docker installed locally or on your server
-- Backend Talkify services running and accessible
-- (Optional) Render account if deploying with Render
+- ✅ Load balances traffic across 4 Vercel Talkify deployments using hash-based distribution
+- ✅ Handles WebSocket upgrade for real-time Socket.IO events
+- ✅ No `upstream` block — ideal for dynamic or serverless targets
+- ✅ Transparent header forwarding for origin and real client IP
+- ✅ Logs backend usage per request for monitoring/debugging
+- ✅ Simple fallback behavior in case of partial failure
 
 ---
 
-## Usage
+## 📜 NGINX Behavior Explained
 
-### Build the NGINX Docker image
+### 🔀 Split-based Load Balancing
 
-```bash
-docker build -t talkify-nginx .
+```nginx
+split_clients "$http_user_agent$remote_addr$request_time" $backend {
+    25% talkify-io.vercel.app;
+    25% talkify-io3.vercel.app;
+    25% talkify-8b6z.vercel.app;
+    25% talkify-io2.vercel.app;
+}
